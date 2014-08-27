@@ -145,7 +145,8 @@ void draw() {
     //    minus zero Celsius in Kevin)
     if( data.address.equals("00:13:a2:00:40:78:f1:5b") ) { 
       //temperatureCelsius = (data.value/1023.0*1.20*4.0*100)-273.15;
-      temperatureCelsius = (data.value/1023.0*1.30*4.0*100)-273.15 + 25.0;
+      //temperatureCelsius = (data.value/1023.0*1.25*4.0*100)-273.15 + 25.0;
+      temperatureCelsius = ((data.value + 0.125 * data.value)/1023.0*1.22*4.0*100)-273.15;
       data.sensor = "LM335";
     }
     
