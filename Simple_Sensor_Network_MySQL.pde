@@ -143,10 +143,11 @@ void draw() {
     //   (value as a ratio of 1023 times max ADC voltage times 
     //    4 (voltage divider value) divided by 10mV per degree
     //    minus zero Celsius in Kevin)
-    if( data.address.equals("00:13:a2:00:40:78:f1:5b") ) { 
-      temperatureCelsius = (data.value/1023.0*1.20*4.0*100)-273.15;
+    if( data.address.equals("00:13:a2:00:40:78:f1:5b") )  {
+      //temperatureCelsius = (data.value/1023.0*1.20*4.0*100)-273.15;
       //temperatureCelsius = (data.value/1023.0*1.30*4.0*100)-273.15 + 25.0;
       //temperatureCelsius = ((data.value + 0.125 * data.value)/1023.0*1.22*4.0*100)-273.15;
+      temperatureCelsius = (data.value/1023.0*0.90*4.0*100 + 100/data.value )-273.15; 
       data.sensor = "LM335";
     }
     
