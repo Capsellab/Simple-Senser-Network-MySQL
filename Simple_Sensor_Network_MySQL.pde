@@ -148,7 +148,8 @@ void draw() {
       //temperatureCelsius = (data.value/1023.0*1.30*4.0*100)-273.15 + 25.0;
       //temperatureCelsius = ((data.value + 0.125 * data.value)/1023.0*1.22*4.0*100)-273.15;
       //temperatureCelsius = (data.value/1023.0*0.90*4.0*100 + 100/data.value )-273.15; 
-      temperatureCelsius = (data.value/1023.0*0.70*4.0*100 + 1023.0/data.value*0.50*4.0*100 )-273.15;
+      //temperatureCelsius = (data.value/1023.0*0.80*4.0*100 + 1023.0/data.value*0.10*4.0*100 )-273.15;
+      temperatureCelsius = (data.value/1023.0*0.81*4.0*100 + 1023.0/data.value*0.11*4.0*100 )-273.15;
       data.sensor = "LM335";
     }
     
