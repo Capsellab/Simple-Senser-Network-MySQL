@@ -3,7 +3,6 @@
  * by Rob Faludi http://faludi.com
  */
 
-// used for Mysql database 'temperature1'
 //  library available from http://bezier.de/processing/libs/sql/
 // fjenett 20120226
 import de.bezier.data.sql.*;
@@ -24,18 +23,18 @@ import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 
-static String version = "1.04";
+static String version = "1.05";
 
-// *** REPLACE WITH THE SERIAL PORT (COM PORT) FOR YOUR LOCAL XBEE ***
-static String mySerialPort = "COM9";
+// *** REPLACE WITH THE SERIAL PORT (COM PORT) FOR YOUR LOCAL XBEE (ZC) ***
+static String mySerialPort = "YOUR_COM_PORT";
 
 MySQL mysql;
 
 
 // *** REPLACE WITH YOUR OWN MYSQL DATABASE ACCOUNT ***
-static String database="temperature1";
-static String user="cartemp";
-static String pass="n5kwqndg";
+static String database="YOUR_DATABASE";
+static String user="YOUR_USER_ACCOUNT";
+static String pass="YOUR_PASSWORD";
 
 
 // create and initialize a new xbee object
@@ -99,9 +98,6 @@ void setup() {
   try {
     mysql = new MySQL( this, "localhost", database, user, pass );
     
-      //java.sql.Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/?user=" + user + "&password=" + pass );
-      //java.sql.Statement s = conn.createStatement();
-      //int result = s.executeUpdate("DESCRIBE " + database +";");
       
   } catch (Exception e) {
     println("** Error opening MySQL database: " + e + " **");
@@ -143,13 +139,8 @@ void draw() {
     //   (value as a ratio of 1023 times max ADC voltage times 
     //    4 (voltage divider value) divided by 10mV per degree
     //    minus zero Celsius in Kevin)
-    if( data.address.equals("00:13:a2:00:40:78:f1:5b") )  {
-      //temperatureCelsius = (data.value/1023.0*1.20*4.0*100)-273.15;
-      //temperatureCelsius = (data.value/1023.0*1.30*4.0*100)-273.15 + 25.0;
-      //temperatureCelsius = ((data.value + 0.125 * data.value)/1023.0*1.22*4.0*100)-273.15;
-      //temperatureCelsius = (data.value/1023.0*0.90*4.0*100 + 100/data.value )-273.15; 
-      //temperatureCelsius = (data.value/1023.0*0.80*4.0*100 + 1023.0/data.value*0.10*4.0*100 )-273.15;
-      temperatureCelsius = (data.value/1023.0*0.81*4.0*100 + 1023.0/data.value*0.12*4.0*100 )-273.15;
+    if( data.address.equals("00:13:a2:00:XX:XX:XX:XX") )  { // your ZED 64bit Address
+      temperatureCelsius = (data.value/1023.0*1.20*4.0*100)-273.15;
       data.sensor = "LM335";
     }
     
@@ -159,12 +150,12 @@ void draw() {
     //    //   (value as a ratio of 1023 times max ADC voltage times 
     //    //    minus 500 mV reading at zero Celsius
     //    //    times 100 to scale for 10mv per degree C)
-    // float temperatureCelsius = ((data.value/1023.0*1.25 - .5) *100); 
+    //  temperatureCelsius = ((data.value/1023.0*1.25 - .5) *100); 
+    //  data.sensor = "TMP36";
     
     //  LM35D with a 1/4 voltage divider
-    if( data.address.equals("00:13:a2:00:40:78:f1:1d") ) { 
+    if( data.address.equals("00:13:a2:00:XX:XX:XX:YY") ) {   // your another ZED 64bit Address
       temperatureCelsius = data.value/1023.0*1.20*4.0454*100;
-      //temperatureCelsius = data.value;
       data.sensor = "LM35D";
     }
     
@@ -193,7 +184,7 @@ void draw() {
     for (int j =0; j<thermometers.size(); j++) {
       ((Thermometer) thermometers.get(j)).render();
     }
-    // post data to MySQL databas every minute
+    // post data to MySQL databas every 15 minutes
     if ((millis() - lastUpdate) > 900000) {
       for (int j =0; j<thermometers.size(); j++) {
         ((Thermometer) thermometers.get(j)).dataPost();
@@ -376,17 +367,7 @@ class Thermometer {
   }
 }
 
-// used only if getSimulatedData is uncommented in draw loop
-//
-//SensorData getSimulatedData() {
-//  SensorData data = new SensorData();
-//  int value = int(random(750,890));
-//  String address = "00:13:A2:00:40:78:F1:58" + str( round(random(0,2)) );  // end device?
-//  data.value = value;
-//  data.address = address;
-//  delay(200);
-//  return data;
-//}
+
 
 // queries the XBee for incoming I/O data frames 
 // and parses them into a data object
