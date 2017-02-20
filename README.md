@@ -1,6 +1,6 @@
 # Simple Sensor Network MySQL
 
- Draws a set of thermometers for incoming XBee Sensor data and save to MySQL
+Draws a set of thermometers for incoming XBee Sensor data and save to MySQL
 
 ## Description
 
